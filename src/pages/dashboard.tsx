@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../../lib/supabaseClient'
 import toast from 'react-hot-toast'
+import type { User } from '@supabase/supabase-js'
 
 export default function Dashboard() {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter();
 
@@ -32,7 +33,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-xl bg-white p-8 rounded-2xl shadow-xl text-center">
-        <h1 className="text-3xl font-bold mb-4 text-black">Welcome, {user.email}</h1>
+        <h1 className="text-3xl font-bold mb-4 text-black">Welcome, {user?.email}</h1>
         <p className="text-gray-600 mb-6 text-black">You are logged in to your dashboard.</p>
         <button
           onClick={handleLogout}
