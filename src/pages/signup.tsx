@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 export default function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [error] = useState('')
   const router = useRouter()
 
 const handleSignup = async (e: React.FormEvent) => {
