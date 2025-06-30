@@ -1,31 +1,57 @@
 import { useState } from 'react'
 import { supabase } from '../../lib/supabaseClient'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const router = useRouter()
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    if (!error) {
-      router.push('/dashboard')
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      toast.error(error.message)
     } else {
-      alert(error.message)
+      toast.success('Login successful!')
+      router.push('/dashboard')
     }
   }
+  
 
   return (
-    <form onSubmit={handleLogin} className="max-w-md mx-auto mt-20">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <input className="w-full p-2 border" type="email" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input className="w-full p-2 border mt-2" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-      <button type="submit" className="mt-4 bg-green-600 text-white px-4 py-2 rounded">Login</button>
-    </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+        <h2 className="text-2xl font-bold mb-6 text-center text-black">Log In</h2>
+        <form onSubmit={handleLogin} className="space-y-4 text-black">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 border border-gray-300 rounded-lg text-black"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 border border-gray-300 rounded-lg"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <button className="w-full bg-green-600 cursor-pointer text-white py-3 rounded-lg hover:bg-green-700 transition">
+            Log In
+          </button>
+        </form>
+        <p className="mt-4 text-sm text-center text-black">
+          Don’t have an account?{' '}
+          <Link href="/signup" className="text-blue-600 hover:underline cursor-pointer">Sign Up</Link>
+        </p>
+      </div>
+    </div>
   )
 }
