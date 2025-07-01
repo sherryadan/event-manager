@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { PrismaClient } from '@prisma/client'
 import { supabase } from '../../../../lib/supabaseClient'
+import { randomUUID } from 'crypto'
 
 const prisma = new PrismaClient()
 
@@ -16,6 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title,
         date: new Date(date),
         userId: user.id,
+        slug: randomUUID(),
       },
     })
     return res.status(200).json(event)

@@ -29,9 +29,9 @@ model Event {
 }
 
 model Guest {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id])
+  id      String   @id @default(cuid())
+  name    String
+  email   String
+  event   Event    @relation(fields: [eventId], references: [id])
+  eventId String
 }
