@@ -20,12 +20,12 @@ model User {
 
 model Event {
   id        String   @id @default(cuid())
-  slug      String   @unique
   title     String
   date      DateTime
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   guests    Guest[]
+  slug      String   @unique
 }
 
 model Guest {
