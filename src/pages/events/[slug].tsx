@@ -11,7 +11,6 @@ export default function EventDetail() {
     const [date, setDate] = useState('')
     const [guestName, setGuestName] = useState('')
     const [guestEmail, setGuestEmail] = useState('')
-    const [guests, setGuests] = useState<any[]>([])
 
 
 
@@ -31,37 +30,7 @@ export default function EventDetail() {
             })
     }, [slug])
 
-    const fetchGuests = async () => {
-        const res = await fetch(`/api/events/${slug}/guests`)
-        const data = await res.json()
-        setGuests(data)
-    }
-    const addGuest = async (e: React.FormEvent) => {
-        e.preventDefault()
-        const res = await fetch('/api/guests', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: guestName, email: guestEmail, eventId: event.id }),
-        })
-        if (res.ok) {
-            toast.success('Guest added')
-            setGuestName('')
-            setGuestEmail('')
-            fetchGuests()
-        } else {
-            toast.error('Failed to add guest')
-        }
-    }
 
-    const deleteGuest = async (guestId: string) => {
-        const res = await fetch(`/api/guests/${guestId}`, { method: 'DELETE' })
-        if (res.ok) {
-            toast.success('Guest deleted')
-            fetchGuests()
-        } else {
-            toast.error('Delete failed')
-        }
-    }
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -111,13 +80,13 @@ export default function EventDetail() {
                 <div className="flex justify-between">
                     <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition">Update</button>
                     <button type="button" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-700 transition">Delete</button>
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         onClick={() => {
                             const eventUrl = `${window.location.origin}/events/${slug}`
                             navigator.clipboard.writeText(eventUrl)
                             toast.success('Event URL copied to clipboard!')
-                        }} 
+                        }}
                         className="bg-green-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-green-700 transition"
                     >
                         Share
