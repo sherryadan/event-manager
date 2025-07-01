@@ -30,7 +30,7 @@ export default function EventDetail() {
                 setDate(data.date.slice(0, 10)) // yyyy-mm-dd
             })
     }, [slug])
-    
+
     const fetchGuests = async () => {
         const res = await fetch(`/api/events/${slug}/guests`)
         const data = await res.json()
@@ -39,30 +39,30 @@ export default function EventDetail() {
     const addGuest = async (e: React.FormEvent) => {
         e.preventDefault()
         const res = await fetch('/api/guests', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: guestName, email: guestEmail, eventId: event.id }),
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: guestName, email: guestEmail, eventId: event.id }),
         })
         if (res.ok) {
-          toast.success('Guest added')
-          setGuestName('')
-          setGuestEmail('')
-          fetchGuests()
+            toast.success('Guest added')
+            setGuestName('')
+            setGuestEmail('')
+            fetchGuests()
         } else {
-          toast.error('Failed to add guest')
+            toast.error('Failed to add guest')
         }
-      }
-      
-      const deleteGuest = async (guestId: string) => {
+    }
+
+    const deleteGuest = async (guestId: string) => {
         const res = await fetch(`/api/guests/${guestId}`, { method: 'DELETE' })
         if (res.ok) {
-          toast.success('Guest deleted')
-          fetchGuests()
+            toast.success('Guest deleted')
+            fetchGuests()
         } else {
-          toast.error('Delete failed')
+            toast.error('Delete failed')
         }
-      }
-      
+    }
+
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault()
         const res = await fetch(`/api/events/${slug}`, {
@@ -93,7 +93,7 @@ export default function EventDetail() {
     if (!event) return <p className="text-center mt-10">Loading...</p>
 
     return (
-        <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
+        <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow text-black">
             <h1 className="text-xl font-bold mb-4">Edit Event</h1>
             <form onSubmit={handleUpdate} className="space-y-4">
                 <input
@@ -109,31 +109,22 @@ export default function EventDetail() {
                     className="w-full p-2 border rounded"
                 />
                 <div className="flex justify-between">
-                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
-                    <button type="button" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition">Update</button>
+                    <button type="button" onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-red-700 transition">Delete</button>
+                    <button 
+                        type="button" 
+                        onClick={() => {
+                            const eventUrl = `${window.location.origin}/events/${slug}`
+                            navigator.clipboard.writeText(eventUrl)
+                            toast.success('Event URL copied to clipboard!')
+                        }} 
+                        className="bg-green-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-green-700 transition"
+                    >
+                        Share
+                    </button>
+                    <button type="button" onClick={() => router.push('/events')} className="bg-gray-600 text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700 transition">Back</button>
                 </div>
             </form>
-            {/* Add Guest */}
-            <div className="mt-8 border-t pt-6">
-                <h2 className="text-lg font-bold mb-4">Guests</h2>
-                <form onSubmit={addGuest} className="flex gap-2 mb-4">
-                    <input type="text" placeholder="Name" required className="border p-2 flex-1 rounded" onChange={e => setGuestName(e.target.value)} />
-                    <input type="email" placeholder="Email" required className="border p-2 flex-1 rounded" onChange={e => setGuestEmail(e.target.value)} />
-                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Add</button>
-                </form>
-
-                <ul className="space-y-2">
-                    {guests.map(g => (
-                        <li key={g.id} className="flex justify-between items-center bg-gray-50 p-2 rounded shadow-sm">
-                            <div>
-                                <strong>{g.name}</strong><br />
-                                <span className="text-sm text-gray-600">{g.email}</span>
-                            </div>
-                            <button onClick={() => deleteGuest(g.id)} className="text-red-600 hover:underline text-sm">Delete</button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
 
         </div>
     )

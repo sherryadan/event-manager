@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabaseClient'
+import { createClient } from '../../lib/supabase/component'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -9,6 +9,7 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [error] = useState('')
   const router = useRouter()
+  const supabase = createClient()
 
 const handleSignup = async (e: React.FormEvent) => {
   e.preventDefault()

@@ -1,12 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { PrismaClient } from '@prisma/client'
-import { supabase } from '../../../../lib/supabaseClient'
+import createClient from '../../../../lib/supabase/api'
 
 const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const slug = req.query.slug as string
-  const { data: { user } } = await supabase.auth.getUser()
+  try {
+    const slug = req.query.slug as string
+    const supabase = createClient(req, res)
+    
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError) {
+      console.error('Auth error:', authError)
+      return res.status(401).json({ error: 'Authentication failed', details: authError.message })
+    }
 
   if (!user) return res.status(401).json({ error: 'Unauthorized' })
 
@@ -35,4 +43,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   res.setHeader('Allow', ['GET', 'PUT', 'DELETE'])
   res.status(405).end(`Method ${req.method} Not Allowed`)
+} catch (error) {
+  console.error('API Error:', error)
+  return res.status(500).json({ 
+    error: 'Internal server error', 
+    details: error instanceof Error ? error.message : 'Unknown error'
+  })
+}
 }

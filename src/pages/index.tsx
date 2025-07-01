@@ -1,15 +1,16 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabaseClient'
+import { createClient } from '../../lib/supabase/component'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error] = useState('')
   const router = useRouter()
-
+  const supabase = createClient()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,7 +19,7 @@ export default function Login() {
       toast.error(error.message)
     } else {
       toast.success('Login successful!')
-      router.push('/dashboard')
+      router.push('/events/')
     }
   }
   
@@ -48,8 +49,12 @@ export default function Login() {
           </button>
         </form>
         <p className="mt-4 text-sm text-center text-black">
-          Don’t have an account?{' '}
+          Don't have an account?{' '}
           <Link href="/signup" className="text-blue-600 hover:underline cursor-pointer">Sign Up</Link>
+        </p>
+        <p className="mt-4 text-sm text-center text-black">
+          Sign in as a guest?{' '}
+          <Link href="/guests" className="text-blue-600 hover:underline cursor-pointer">Guest</Link>
         </p>
       </div>
     </div>
