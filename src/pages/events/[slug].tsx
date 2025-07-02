@@ -14,10 +14,6 @@ export default function EventDetail() {
 
 
 
-    useEffect(() => {
-        if (slug) fetchGuests()
-    }, [slug])
-
 
     useEffect(() => {
         if (!slug) return
