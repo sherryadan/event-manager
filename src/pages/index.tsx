@@ -52,10 +52,6 @@ export default function Login() {
           Don't have an account?{' '}
           <Link href="/signup" className="text-blue-600 hover:underline cursor-pointer">Sign Up</Link>
         </p>
-        <p className="mt-4 text-sm text-center text-black">
-          Sign in as a guest?{' '}
-          <Link href="/guests" className="text-blue-600 hover:underline cursor-pointer">Guest</Link>
-        </p>
       </div>
     </div>
   )

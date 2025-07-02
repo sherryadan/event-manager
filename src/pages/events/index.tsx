@@ -47,7 +47,12 @@ export default function EventsList() {
               <Link href={`/events/${event.slug}`} className="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600 transition">
                 Edit
               </Link>
-              
+              <Link
+                href={`/rsvp/${event.slug}`}
+                className="bg-yellow-500 text-white text-sm px-3 py-1 rounded hover:bg-yellow-600 transition"
+              >
+                RSVP
+              </Link>
             </div>
           </li>
         ))}

@@ -29,9 +29,16 @@ model Event {
 }
 
 model Guest {
-  id      String   @id @default(cuid())
-  name    String
-  email   String
-  event   Event    @relation(fields: [eventId], references: [id])
-  eventId String
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  rsvp      RsvpStatus @default(MAYBE)
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+}
+
+enum RsvpStatus {
+  YES
+  NO
+  MAYBE
 }
