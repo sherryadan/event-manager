@@ -42,10 +42,7 @@ export default function EventsList() {
             <p className="text-sm text-gray-600">{new Date(event.date).toLocaleDateString()}</p>
             <div className="flex gap-2 mt-2">
               <Link href={`/events/${event.slug}`} className="bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600 transition">
-                View
-              </Link>
-              <Link href={`/events/${event.slug}`} className="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600 transition">
-                Edit
+                View/Edit
               </Link>
               <Link
                 href={`/rsvp/${event.slug}`}
